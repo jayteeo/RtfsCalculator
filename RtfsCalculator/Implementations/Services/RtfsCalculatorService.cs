@@ -13,10 +13,10 @@ namespace RtfsCalculator.Implementations.Services
 
         public async Task<string> HandleAddFunctionOfFormattedString(string formattedString)
         {
-            var customDelimiter = await GetCustomDelimiter(formattedString);
-            if (customDelimiter.HasValue)
+            var customDelimiter = await GetCustomStringDelimiter(formattedString);
+            if (customDelimiter != null)
             {
-                formattedString = formattedString.Replace(customDelimiter.Value, ',');
+                formattedString = formattedString.Replace(customDelimiter, ",");
             }
             formattedString = formattedString.Replace(@"\n", ",");
             var inputValues = formattedString.Split(Delimiter).ToList();
@@ -36,12 +36,12 @@ namespace RtfsCalculator.Implementations.Services
             return await Task.FromResult(result.ToString());
         }
 
-        private async Task<char?> GetCustomDelimiter(string formattedString)
+        private async Task<string> GetCustomStringDelimiter(string formattedString)
         {
-            var match = new Regex(@"[/][/].").Match(formattedString);
+            var match = new Regex(@"(?<=\/\/\[)(.*?)(?=\])").Match(formattedString);
             if (match.Success)
             {
-                return await Task.FromResult(formattedString.ToCharArray()[2]);
+                return await Task.FromResult(match.Value);
             }
             else
             {
