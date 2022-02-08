@@ -9,7 +9,8 @@ namespace RtfsCalculator.Implementations.Services
         const char Delimiter = ',';
 
         public async Task<string> HandleAddFunctionOfFormattedString(string formattedString)
-        {            
+        {
+            formattedString = formattedString.Replace(@"\n", ",");
             var inputValues = formattedString.Split(Delimiter);
 
             var result = 0;
