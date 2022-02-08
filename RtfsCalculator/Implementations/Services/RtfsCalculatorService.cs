@@ -23,6 +23,7 @@ namespace RtfsCalculator.Implementations.Services
             {
                 var currentValue = 0;
                 int.TryParse(inputValues[i], out currentValue);
+                if (currentValue > 1000) { currentValue = 0; }
                 result = result + currentValue;
             }
 
