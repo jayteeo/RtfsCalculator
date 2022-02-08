@@ -18,7 +18,6 @@ namespace RtfsCalculator.Test
 
         [TestCase("20", "20")]
         [TestCase("1,5000", "5001")]
-        [TestCase("4,-3", "1")]
         [TestCase("", "0")]
         [TestCase("1,2,3,4,5,6,7,8,9,10,11,12", "78")]
         [TestCase(@"1\n2,3", "6")]
@@ -27,6 +26,17 @@ namespace RtfsCalculator.Test
         {
             var result = await _rtfsCalculatorService.HandleAddFunctionOfFormattedString(formattedText);
             Assert.That(result == expectedResult);
+        }
+
+        [Test]
+        public void HandleAddFunctionOfFormattedText_ThrowsInvalidInputExceptionWhenContainsNegativeValues()
+        {
+            Assert.ThrowsAsync<InvalidInputException>(new AsyncTestDelegate(AddFormattedTextContainingNegativeValues));
+        }
+
+        public async Task AddFormattedTextContainingNegativeValues()
+        {
+            await _rtfsCalculatorService.HandleAddFunctionOfFormattedString("1,2,-5,-2");
         }
     }
 }
