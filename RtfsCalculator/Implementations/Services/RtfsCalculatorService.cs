@@ -3,6 +3,7 @@ using RtfsCalculator.Exceptions;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace RtfsCalculator.Implementations.Services
 {
@@ -12,6 +13,11 @@ namespace RtfsCalculator.Implementations.Services
 
         public async Task<string> HandleAddFunctionOfFormattedString(string formattedString)
         {
+            var customDelimiter = await GetCustomDelimiter(formattedString);
+            if (customDelimiter.HasValue)
+            {
+                formattedString = formattedString.Replace(customDelimiter.Value, ',');
+            }
             formattedString = formattedString.Replace(@"\n", ",");
             var inputValues = formattedString.Split(Delimiter).ToList();
             
@@ -28,6 +34,19 @@ namespace RtfsCalculator.Implementations.Services
             }
 
             return await Task.FromResult(result.ToString());
+        }
+
+        private async Task<char?> GetCustomDelimiter(string formattedString)
+        {
+            var match = new Regex(@"[/][/].").Match(formattedString);
+            if (match.Success)
+            {
+                return await Task.FromResult(formattedString.ToCharArray()[2]);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private async Task ValidateInput(List<string> inputValues)

@@ -22,6 +22,7 @@ namespace RtfsCalculator.Test
         [TestCase("1,2,3,4,5,6,7,8,9,10,11,12", "78")]
         [TestCase(@"1\n2,3", "6")]
         [TestCase("2,1001,6", "8")]
+        [TestCase(@"//#\n2#5", "7")]
         public async Task HandleAddFunctionOfFormattedText_Test(string formattedText,
             string expectedResult)
         {
