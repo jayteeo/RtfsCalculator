@@ -12,9 +12,8 @@ namespace RtfsCalculator.Implementations.Services
         {            
             var inputValues = formattedString.Split(Delimiter);
 
-            if (inputValues.Length > 2) { throw new InvalidInputException("Input cannot exceed 2 values."); }
-
             var result = 0;
+            
             for (int i = 0; i < inputValues.Length; i++)
             {
                 var currentValue = 0;
