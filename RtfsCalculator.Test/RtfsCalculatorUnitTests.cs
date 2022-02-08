@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using RtfsCalculator.Abstractions.Interfaces.Services;
+using RtfsCalculator.Exceptions;
 using RtfsCalculator.Implementations.Services;
 using System.Threading.Tasks;
 

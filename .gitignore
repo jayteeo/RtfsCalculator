@@ -3,3 +3,9 @@
 ################################################################################
 
 /.vs
+/RtfsCalculator/bin/Debug/netcoreapp3.1
+/RtfsCalculator/obj/Debug/netcoreapp3.1
+/RtfsCalculator/obj/Release/netcoreapp3.1
+/RtfsCalculator/obj
+/RtfsCalculator.Test/bin/Debug/netcoreapp3.1
+/RtfsCalculator.Test/obj
