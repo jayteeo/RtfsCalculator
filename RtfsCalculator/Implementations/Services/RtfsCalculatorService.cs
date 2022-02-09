@@ -9,17 +9,21 @@ namespace RtfsCalculator.Implementations.Services
 {
     public class RtfsCalculatorService : IRtfsCalculatorService
     {
-        const char Delimiter = ',';
+        const char CommaDelimiter = ',';
+        const string NewLineDelimiter = @"\n";
 
         public async Task<string> HandleAddFunctionOfFormattedString(string formattedString)
         {
-            var customDelimiter = await GetCustomStringDelimiter(formattedString);
-            if (customDelimiter != null)
+            var customDelimiters = await GetCustomStringDelimiters(formattedString);
+            if (customDelimiters != null)
             {
-                formattedString = formattedString.Replace(customDelimiter, ",");
+                foreach(var customDelimiter in customDelimiters)
+                {
+                    formattedString = formattedString.Replace(customDelimiter, ",");
+                }
             }
-            formattedString = formattedString.Replace(@"\n", ",");
-            var inputValues = formattedString.Split(Delimiter).ToList();
+            formattedString = formattedString.Replace(NewLineDelimiter, ",");
+            var inputValues = formattedString.Split(CommaDelimiter).ToList();
             
             await ValidateInput(inputValues);
             
@@ -36,17 +40,16 @@ namespace RtfsCalculator.Implementations.Services
             return await Task.FromResult(result.ToString());
         }
 
-        private async Task<string> GetCustomStringDelimiter(string formattedString)
+        private async Task<List<string>> GetCustomStringDelimiters(string formattedString)
         {
-            var match = new Regex(@"(?<=\/\/\[)(.*?)(?=\])").Match(formattedString);
-            if (match.Success)
+            var lastIndexOfClosingBracket = formattedString.LastIndexOf("]");
+            if (lastIndexOfClosingBracket > -1 && formattedString.StartsWith("//"))
             {
-                return await Task.FromResult(match.Value);
+                var formattedStringDelimitersSection = formattedString.Substring(0, lastIndexOfClosingBracket + 1);
+                var matches = new Regex(@"(?<=\[)(.*?)(?=\])").Matches(formattedStringDelimitersSection);
+                return await Task.FromResult(matches.Select(match => match.Value).ToList());
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         private async Task ValidateInput(List<string> inputValues)

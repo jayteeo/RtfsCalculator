@@ -23,6 +23,7 @@ namespace RtfsCalculator.Test
         [TestCase(@"1\n2,3", "6")]
         [TestCase("2,1001,6", "8")]
         [TestCase(@"//[***]\n11***22***33", "66")]
+        [TestCase(@"//[*][!!][r9r]\n11r9r22*hh*33!!44", "110")]
         public async Task HandleAddFunctionOfFormattedText_Test(string formattedText,
             string expectedResult)
         {
