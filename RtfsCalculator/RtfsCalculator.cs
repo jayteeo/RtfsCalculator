@@ -7,7 +7,7 @@ namespace RtfsCalculator
     public class RtfsCalculator
     {
         private readonly IRtfsCalculatorService _rtfsCalculatorService;
-        private bool _continue = true;
+        public static volatile bool Continue = true;
         public RtfsCalculator(IRtfsCalculatorService rtfsCalculatorService)
         {
             _rtfsCalculatorService = rtfsCalculatorService;
@@ -18,14 +18,16 @@ namespace RtfsCalculator
             Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e)
             {
                 e.Cancel = true;
-                _continue = false;
+                Continue = false;
             };
-                
-            while (_continue)
+
+            Console.Write("Enter formatted string to calculate: ");
+
+            while (Continue)
             {
-                Console.Write("Enter formatted string to calculate: ");
                 var input = Console.ReadLine();
                 Console.WriteLine(await _rtfsCalculatorService.HandleAddFunctionOfFormattedString(input));
+                Console.Write("Enter formatted string to calculate: ");
             }
         }
     }

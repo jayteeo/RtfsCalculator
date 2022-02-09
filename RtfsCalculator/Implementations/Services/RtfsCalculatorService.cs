@@ -14,6 +14,7 @@ namespace RtfsCalculator.Implementations.Services
 
         public async Task<string> HandleAddFunctionOfFormattedString(string formattedString)
         {
+            if (!RtfsCalculator.Continue) { return string.Empty; }
             var customDelimiters = await GetCustomStringDelimiters(formattedString);
             if (customDelimiters != null)
             {
